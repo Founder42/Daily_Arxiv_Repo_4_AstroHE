@@ -22,16 +22,18 @@ Compared to the original version, this modified version can:
 
 # Content
 - `HE_Sync_Report_2026-03-16.html`: an example of daily report on astro.HE papers for 2026-3-16.
-- `arxiv_daily_for_HE_noAPI.py`: the script
+- `arxiv_daily_for_HE_noAPI.py`: the script based on OpenAI API (or similar LLM)
+- `arxiv_daily_for_HE_gemini_noAPI.py`: the script based on Gemini API, with counts on tokens
 
 # Usage
 ## Preparation
-- python >=3.8
+- python >=3.9
 - use `pip` to install these packages:
     - arxiv
     - datetime
     - openai
     - pytz
+    - `pip install -q -U google-genai`
 - Prepare your own LLM API keys
 
 ## Running
