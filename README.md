@@ -8,12 +8,14 @@
 - This AI-based tool aims to scan, filter, categorize, summarize daily Arxiv papers majoring in **High-Energy astrophysics**, and generate an easy-to-read report for researchers interested in this regime.
 - **Timing**: the tool extracts the exact daily updated papers matching the time window of offical arxiv website.
 - **Categorizing**: Indexing all the papers and categorizing into sub-topics to help you locate your interested ones.
+- **Labeling**: Label all the papers on 'observation', 'simulation' and 'theory'.
 - **Summarizing**: 2-3 sentences to address the core scientific outcome for each paper.
 
-# Modify log
+# New features:
 Compared to the original version, this modified version can:
 - Focus on **high-energy astrophysics**
 - **Filter** out those papers of pure cosmology and particle astrophysics. (With no offense\_(:з」∠)\_)
+- **Wavelength**: For observation papers, label them with wavelength (X-ray/UV/gamma-ray/...) they use and also the targets they observe.
 
 # Warning
 - **This tool is powered by AI LLM. The generated contents are not guarenteed to be accurate or complete. Users are solely responsible for independently verification. The developers shall not be liable for any loss arising from any failure to perform manual check.**
