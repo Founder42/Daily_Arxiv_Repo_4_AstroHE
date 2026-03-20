@@ -1,25 +1,18 @@
 ## arXiv 每日同步版日报生成器 --- 作者：朱柏铖 (author:Bocheng Zhu bochengzhu@outlook.com)
 ## Github: https://github.com/PiggyDreamer95/arxiv_gal_DailyRep_Gen_ai
-## Modified by Fangzheng Shi
-## Modify log:
-## - Changed to be based on Gemini API.
-
-
-## Task list
-## - Control token budget of thinking.
-
+## Modified by Fangzheng Shi)
+## Modify lo (to be done):
+## - English version + Chinese version (better prompt for translation)
 import arxiv
 import datetime
-#from openai import OpenAI
-from google import genai
-from google.genai import types
+from openai import OpenAI
 from datetime import timedelta
 import pytz
 # ==========================================
-MY_API_KEY = "Your Gemini API Key~"
-#MY_BASE_URL = "https://api.deepseek.com/v1"
-MY_MODEL = "gemini-3-flash-preview"
-client = genai.Client(api_key=MY_API_KEY)
+MY_API_KEY = "Your API Key here~"
+MY_BASE_URL = "Your Base URL here~"
+MY_MODEL = "Your model here~"
+client = OpenAI(api_key=MY_API_KEY, base_url=MY_BASE_URL)
 # ==========================================
 def get_arxiv_sync_window():
     """精确计算 arXiv 今日公布批次的提交时间窗口"""
@@ -66,7 +59,7 @@ def fetch_arxiv_papers_HE():
 
 ######## Multiple topics ##########
 
-def generate_report_gemini(papers):
+def generate_report(papers):
     if not papers: return "<p>No updates today. Happy Happy Happy~</p>"
     
     input_text = ""
@@ -141,21 +134,61 @@ INSTRUCTIONS FOR PLACEHOLDERS:
     {input_text}
     """
 
-    print("Gemini is Generating minutes ...")
+    print("Deepseek is deeply seeking ...")
     try:
-        response = client.models.generate_content(
+        response = client.chat.completions.create(
             model=MY_MODEL,
-            contents=prompt,
-            config=types.GenerateContentConfig(
-                thinking_config=types.ThinkingConfig(thinking_level="medium")
-                #thinking_config=types.ThinkingConfig(thinking_level="high")
-            ),
+            messages=[{"role": "user", "content": prompt}]
         )
-        print("Thoughts tokens:",response.usage_metadata.thoughts_token_count)
-        print("Output tokens:",response.usage_metadata.candidates_token_count)
-        return response.text
+        return response.choices[0].message.content
     except Exception as e:
         return f"Error: {e}"
+    
+#def generate_report_Xread(papers):
+    ### Require modifying .....
+    # I want the link to the paper appera too
+    #if not papers: return "<p>No updates today.</p>"
+    
+    #input_text = ""
+    #for i, p in enumerate(papers):
+    #    input_text += f"[{i+1}] Title: {p['title']}\nAuthors: {p['authors']}\nAbstract: {p['summary']}\nURL: {p['url']}\n\n"
+
+    #prompt = f"""
+    #你是一名专业的天文学公众号主编且资深天文学家。请处理以下 {len(papers)} 篇论文，严格按以下格式输出语言为英文的HTML：
+
+    #一、领域归类 (Index Section)
+    #按领域（如：Active galactic nuclei, Black holes, Dark matter, Intracluster medium, Jets, Neutrino astronomy, particle astrophysics, plasma physics, Relativistic binary stars, Seyfert galaxies, Transient source, Warm-hot intergalactic medium）分类，在每个类别后列出对应的论文编号。
+    #注意：同一个论文可能涉及多个领域，请在所有相关领域下列出其编号。
+    #格式示例：领域名称：[1], [5], [12]
+    #用户关注领域：Active galactic nuclei, Black holes, Seyfert galaxies, Intracluster medium, Warm-hot intergalactic medium, Transient source
+    #只需列出属于【用户关注领域】的论文，其他领域的论文不需要列出。
+
+    #二、论文条目 (Details Section)
+    #按编号顺序排列所有属于【用户关注领域】的论文。
+    #每篇格式：
+    #[编号] 论文英文标题
+    #作者：姓名全称（若有天文模拟、观测、理论、方法等领域的著名学者，请用 <strong style="color:#d35400;">姓名 ★(Famous Scholar)</strong>）
+    #研究方法：[需判定为 Observation / Simulation / Theory / Technology 之一]。判定标准：若文章核心是对于观测数据的分析，请标为 [Observation]；若核心是算法改进或软件评测或统计学讨论，请标为 [Methods]。若核心是进行了数值模拟，请标为 [Simulation]；若核心是提出理论分析或模型构建，请标为 [Theory]。
+    #研究波段：对于判定为[Observation]，请进一步判定其主要研究波段（如：X-ray, Optical, Radio, Gamma-ray, Multi-wavelength等）。如果论文涉及多个波段，请列出所有相关波段。
+    #核心物理结果：严禁使用‘本文研究了...’这种废话。请直接描述物理发现，例如：‘发现星系旋转曲线在 R > 20kpc 处依然平坦，暗示暗物质晕比例高于预期。’，使用 2-3 句准确、简洁的英文学术表达。保留希腊字母(α, β, σ)和太阳符号(M☉)，保留天体名称。
+
+    #要求：
+    #- 严禁 Markdown 符号（如 ##, **），必须使用纯 HTML 标签 (<h3>, <ul>, <li>, <p>, <strong>)。
+    #- 只返回 <body> 内部内容。
+
+    #待处理论文：
+    #{input_text}
+    #"""
+
+    #print("Deepseek is deeply seeking ...")
+    #try:
+    #    response = client.chat.completions.create(
+    #        model=MY_MODEL,
+    #        messages=[{"role": "user", "content": prompt}]
+    #    )
+    #    return response.choices[0].message.content
+    #except Exception as e:
+    #    return f"Error: {e}"
     
 #################
 # Translation from English to Chinese with super prompts here .... (Under construction)
@@ -194,16 +227,47 @@ def save_html_English(content, lenpapers):
 </body>
 </html>"""
     
-    filename = f"HE_Sync_Report_{date_str}_Gemini.html"
+    filename = f"HE_Sync_Report_{date_str}_DeepSeek.html"
     with open(filename, "w", encoding="utf-8-sig") as f:
         f.write(html_layout)
     print(f"Daily Report Generated: {filename}")
 
 
+
+def save_html(content, lenpapers):
+    date_str = datetime.datetime.now().strftime("%Y-%m-%d")
+    html_layout = f"""<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {{ font-family: -apple-system, sans-serif; line-height: 1.6; color: #333; max-width: 900px; margin: auto; padding: 20px; }}
+        .header {{ background: #004085; color: white; padding: 20px; border-radius: 10px; text-align: center; }}
+        .index-box {{ background: #f8f9fa; border: 1px solid #dee2e6; padding: 20px; border-radius: 8px; margin: 20px 0; }}
+        .paper-item {{ border-bottom: 1px solid #eee; padding: 15px 0; }}
+        .method-tag {{ color: #28a745; font-weight: bold; font-size: 0.9em; }}
+        h3 {{ color: #004085; border-left: 5px solid #004085; padding-left: 10px; margin-top: 40px; }}
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2 style="margin:0;">🌌 星系物理与动力学日报</h2>
+        <p>{date_str} | 今日同步更新 {lenpapers} 篇</p>
+    </div>
+    {content.replace('```html', '').replace('```', '')}
+</body>
+</html>"""
+    
+    filename = f"HE_Sync_Report_{date_str}_DeepSeek.html"
+    with open(filename, "w", encoding="utf-8-sig") as f:
+        f.write(html_layout)
+    print(f"Daily Report Generated: {filename}")
+
 if __name__ == "__main__":
     # Ensure pytz is installed: !pip install pytz
     data = fetch_arxiv_papers_HE()
-    report_eng = generate_report_gemini(data)
+    report_eng = generate_report(data)
     save_html_English(report_eng, len(data))
     # translate to Chinese
     #.....on going 

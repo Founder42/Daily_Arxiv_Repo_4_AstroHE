@@ -16,14 +16,18 @@ Compared to the original version, this modified version can:
 - Focus on **high-energy astrophysics**
 - **Filter** out those papers of pure cosmology and particle astrophysics. (With no offense\_(:з」∠)\_)
 - **Wavelength**: For observation papers, label them with wavelength (X-ray/UV/gamma-ray/...) they use and also the targets they observe.
+- **Dark Theme**: (26-03-20) Change the html theme to dark mode. 
+- **Structurized output**: (26-3-20) Improved highlighst on Methods. Improve html structurized output.
 
 # Warning
 - **This tool is powered by AI LLM. The generated contents are not guarenteed to be accurate or complete. Users are solely responsible for independently verification. The developers shall not be liable for any loss arising from any failure to perform manual check.**
 
 # Content
-- `HE_Sync_Report_2026-03-16.html`: an example of daily report on astro.HE papers for 2026-3-16.
-- `arxiv_daily_for_HE_noAPI.py`: the script based on OpenAI API (or similar LLM)
-- `arxiv_daily_for_HE_gemini_noAPI.py`: the script based on Gemini API, with counts on tokens
+- `arxiv_daily_for_HE_DeepSeek_noAPI.py`: the script based on OpenAI API (or similar LLM). The prompt is optimized for DeepSeek (Model: deepseek-reasoner).
+- `arxiv_daily_for_HE_gemini_noAPI.py`: the script based on Gemini API, with counts on tokens. The prompt is optimized for Gemini Flash 3.
+- `HE_Sync_Report_2026-03-20_Gemini.html`: an example of daily report on astro.HE papers for 2026-3-20 powered by Gemini Flash 3.
+- `HE_Sync_Report_2026-03-20_DeepSeek.html`: an example of daily report on astro.HE papers for 2026-3-20 powered by DeepSeek reasoner.
+
 
 # Usage
 ## Preparation
@@ -37,7 +41,18 @@ Compared to the original version, this modified version can:
 - Prepare your own LLM API keys
 
 ## Running
-- `python arxiv_daily_for_HE_noAPI.py`
+- `python arxiv_daily_for_HE_gemini_noAPI.py`
+
+# API costs
+- **For Gemini Flash 3**: 5000 to 8000 tokens for each day. Free Tier in Google AI Studio is enough for personal use.
+- **For DeepSeek reasoner API**: Roughly 0.04 to 0.1 RMB (0.005 to 0.012 euro) each day.
+
+
+# Benchmark
+- It seems Gemini can better categorize the papers into sub-topics, and labeling famous scholars.
+- It seems DeepSeek do better in structurized html output, recovering all my requests on highlights (even if I do not explicitly ask for them).
+- DeepSeek thinks for longer time, Gemini (flash3, thinking level=medium) is slightly faster.
+- For Gemini: `thinking_level=medium` seems perform better than `high`, with more tokens used. 
 
 # Ongoing Tasks
 - Keep polishing the prompt
