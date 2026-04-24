@@ -12,6 +12,10 @@ import pytz
 MY_API_KEY = "Your API Key here~"
 MY_BASE_URL = "Your Base URL here~"
 MY_MODEL = "Your model here~"
+# For deepseek:
+# - 'deepseek-v4-flash', is faster and cheaper, still weaker than 'gemini-3-flash'
+# - 'deepseek-v4-pro' is 50x more expensive than flash so far, and took much longer time, 
+#    but comparable or stronger than 'gemini-3-flash'. It now has a high accuracy in marking 'famous scholars'.
 client = OpenAI(api_key=MY_API_KEY, base_url=MY_BASE_URL)
 # ==========================================
 def get_arxiv_sync_window():
@@ -138,7 +142,10 @@ INSTRUCTIONS FOR PLACEHOLDERS:
     try:
         response = client.chat.completions.create(
             model=MY_MODEL,
-            messages=[{"role": "user", "content": prompt}]
+            messages=[{"role": "user", "content": prompt}],
+            stream=False,
+            reasoning_effort="high",
+            extra_body={"thinking":{"type":"enabled"}}
         )
         return response.choices[0].message.content
     except Exception as e:

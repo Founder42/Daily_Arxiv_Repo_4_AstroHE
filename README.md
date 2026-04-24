@@ -18,15 +18,17 @@ Compared to the original version, this modified version can:
 - **Wavelength**: For observation papers, label them with wavelength (X-ray/UV/gamma-ray/...) they use and also the targets they observe.
 - **Dark Theme**: (26-03-20) Change the html theme to dark mode. 
 - **Structurized output**: (26-3-20) Improved highlighst on Methods. Improve html structurized output.
+- **Compatibile with Deepseek-v4**: (26-4-24) Modify to be compatible with new Deepseek-v4 models.
 
 # Warning
 - **This tool is powered by AI LLM. The generated contents are not guarenteed to be accurate or complete. Users are solely responsible for independently verification. The developers shall not be liable for any loss arising from any failure to perform manual check.**
 
 # Content
-- `arxiv_daily_for_HE_DeepSeek_noAPI.py`: the script based on OpenAI API (or similar LLM). The prompt is optimized for DeepSeek (Model: deepseek-reasoner).
+- `arxiv_daily_for_HE_DeepSeek_noAPI.py`: the script based on OpenAI API (or similar LLM). The prompt is optimized for DeepSeek (Model: deepseek-v4-flash, deepseek-v4-pro, default with thinking mode).
 - `arxiv_daily_for_HE_gemini_noAPI.py`: the script based on Gemini API, with counts on tokens. The prompt is optimized for Gemini Flash 3.
 - `HE_Sync_Report_2026-03-20_Gemini.html`: an example of daily report on astro.HE papers for 2026-3-20 powered by Gemini Flash 3.
 - `HE_Sync_Report_2026-03-20_DeepSeek.html`: an example of daily report on astro.HE papers for 2026-3-20 powered by DeepSeek reasoner.
+- `Benchmark`: A comparison for 3 daily reports on the same date, with Gemini-flash-3, deepseek-v4-flash and deepseek-v4-pro respectively, for your reference.
 
 
 # Usage
@@ -53,6 +55,11 @@ Compared to the original version, this modified version can:
 - It seems DeepSeek do better in structurized html output, recovering all my requests on highlights (even if I do not explicitly ask for them).
 - DeepSeek thinks for longer time, Gemini (flash3, thinking level=medium) is slightly faster.
 - For Gemini: `thinking_level=medium` seems perform better than `high`, with more tokens used. 
+- (26-04-24) After Deepseek v4 model release:
+    - 'deepseek-v4-flash', is faster and cheaper, but still weaker than 'gemini-3-flash' in categorizing and summarizing.
+    - 'deepseek-v4-pro' is 50x more expensive than deepseek-v4-flash so far, and took much longer time; but its performance is comparable or slightly stronger than 'gemini-3-flash'. It now has an updated word knowledge and has a high accuracy in marking 'famous scholars'.
+- Overall I would suggest to use either 'Gemini-3-flash' (to save money) or 'deepseek-v4-pro' for higher performance.
+
 
 # Ongoing Tasks
 - Keep polishing the prompt
